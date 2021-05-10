@@ -242,7 +242,7 @@ class MetapathBasePathSample:
         u_list.sort(key=lambda x: x[1], reverse=True)
         u_list = u_list[:5]
 
-        if (len(u_list) == 0):
+        if len(u_list) == 0:
             return
         self.outfile.write(str(s_u) + ',' + str(e_b) + '\t' + str(len(u_list)))
         for uu in u_list:
@@ -505,7 +505,7 @@ class MetapathBasePathSample:
 
 
 if __name__ == '__main__':
-    ubfile = '../data/yelp/ub_0.8.train'
+    ubfile = '../data/yelp/yelp.train.rating'
     bcafile = '../data/yelp/bca.txt'
     bcifile = '../data/yelp/bci.txt'
     ucofile = '../data/yelp/uco.txt'

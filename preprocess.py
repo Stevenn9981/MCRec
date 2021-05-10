@@ -26,16 +26,19 @@ train_rate = 0.8
 train = []
 
 dict = collections.defaultdict(list)
+# train_dict = collections.defaultdict(list)
+test_dict = collections.defaultdict(list)
 
 
 data = []
-with open('data/ml-100k.train.rating_1', 'r') as infile:
+with open('data/yelp/yelp.train.rating', 'r') as infile:
     for line in infile.readlines():
         inter = [int(i) for i in line.strip().split('\t')]
         data.append([inter[0], inter[1], 5])
         dict[inter[0]].append(inter[1])
+        # train_dict[inter[0]].append(inter[1])
 
-with open('data/ml-100k.test.rating_1', 'r') as infile:
+with open('data/yelp/yelp.test.rating', 'r') as infile:
     for line in infile.readlines():
         inter = [int(i) for i in line.strip().split()]
         user, item_ids = inter[0], inter[1:]
@@ -43,38 +46,29 @@ with open('data/ml-100k.test.rating_1', 'r') as infile:
         for item in item_ids:
             data.append([user, item, 5])
             dict[user].append(item)
+            test_dict[inter[0]].append(str(item))
 
-user_ids_batch = list(dict.keys())
-neg_dict = collections.defaultdict(list)
+# user_ids_batch = list(dict.keys())
+# neg_dict = collections.defaultdict(list)
 
 # for u in user_ids_batch:
-#     for _ in test_dict[u]:
-#         nl = sample_neg_items_for_u_test(train_dict, test_dict, u, 1)
+#     for _ in dict[u]:
+#         nl = sample_neg_items_for_u_test(train_dict, test_dict, u, 100)
 #         for l in nl:
 #             train.append([str(u), str(l), '0'])
 
-random.shuffle(data)
+# random.shuffle(data)
 # random.shuffle(test)
 
 
-fw1 = open('data/ml-100k/ml-100k.train.rating', 'w')
-fw2 = open('data/ml-100k/ml-100k.test.rating', 'w')
-fw3 = open('data/ml-100k/ml-100k.test.negative', 'w')
+# fw1 = open('data/ml-100k/yelp.train.rating', 'w')
+# fw2 = open('data/ml-100k/ml-100k.test.rating', 'w')
+fw3 = open('data/yelp/yelp.test.negative', 'w')
 
-test_dict = collections.defaultdict(list)
-for i in range(len(data)):
-    rating = data[i]
-    if i < len(data) * 0.8:
-        fw1.write(str(rating[0]) + '\t' + str(rating[1]) + '\t' + '5\n')
-    else:
-        test_dict[rating[0]].append(str(rating[1]))
-
-for user in test_dict:
-    fw2.write(str(user) + ' ' + ' '.join(test_dict[user]) + '\n')
 
 for user in test_dict:
     fw3.write('(' + str(user) + ',' + ','.join(test_dict[user]) + ')')
-    for i in range(1, 1683):
+    for i in range(1, 14285):
         if i not in dict[user]:
             fw3.write(' ' + str(i))
     fw3.write('\n')
