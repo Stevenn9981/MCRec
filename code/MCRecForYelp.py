@@ -33,7 +33,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Run MCRec.")
     parser.add_argument('--dataset', nargs='?', default='yelp',
                         help='Choose a dataset.')
-    parser.add_argument('--epochs', type=int, default=3,
+    parser.add_argument('--epochs', type=int, default=30,
                         help='Number of epochs.')
     parser.add_argument('--batch_size', type=int, default=256,
                         help='Batch size.')
