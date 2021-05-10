@@ -247,7 +247,7 @@ class MetapathBasePathSample:
         self.outfile.write(str(s_u) + ',' + str(e_b) + '\t' + str(len(u_list)))
         for uu in u_list:
             path = ['u' + str(s_u), 'u' + str(uu[0]), 'b' + str(e_b)]
-            self.outfile.write('\t' + '-'.join(path) + ' ' + str(uu[1]))
+            self.outfile.write('\t' + '-'.join(path))
         self.outfile.write('\n')
     #
     # def walk_ummm(self, s_u, e_b):
