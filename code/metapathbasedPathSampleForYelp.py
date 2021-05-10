@@ -110,8 +110,7 @@ class MetapathBasePathSample:
             elif self.metapath == 'ubub':
                 self.walk_ubub(u, b)
             elif self.metapath == 'uub':
-                pass
-                # self.walk_uub(u, b)
+                self.walk_uub(u, b)
             else:
                 print('unknow metapath.')
                 exit(0)
@@ -223,38 +222,33 @@ class MetapathBasePathSample:
             self.outfile.write('\t' + '-'.join(path))
         self.outfile.write('\n')
 
-    # def walk_uuum(self, s_u, e_b):
-    #     limit = 10
-    #     uf_list = []
-    #     for uf in self.uu_dict[s_u]:
-    #         uf_list.append([uf, 1])
-    #
-    #     us_list = []
-    #     for us in self.bu_dict.get(e_b, []):
-    #         sim = self.get_sim(self.item_embedding[e_b], self.user_embedding[us])
-    #         us_list.append([us, sim])
-    #     us_list.sort(key=lambda x: x[1], reverse=True)
-    #     us_list = us_list[:limit]
-    #
-    #     uu_list = []
-    #     for uf in uf_list:
-    #         for us in us_list:
-    #             uff = uf[0]
-    #             uss = us[0]
-    #             if uff in self.uu_dict and uss in self.uu_dict[uff] and uss != s_u:
-    #                 sim = us[1]
-    #                 if sim > 0.7:
-    #                     uu_list.append([uff, uss, sim])
-    #     uu_list.sort(key=lambda x: x[2], reverse=True)
-    #     uu_list = uu_list[:5]
-    #
-    #     if (len(uu_list) == 0):
-    #         return
-    #     self.outfile.write(str(s_u) + ',' + str(e_b) + '\t' + str(len(uu_list)))
-    #     for uu in uu_list:
-    #         path = ['u' + str(s_u), 'u' + str(uu[0]), 'u' + str(uu[1]), 'm' + str(e_b)]
-    #         self.outfile.write('\t' + '-'.join(path) + ' ' + str(uu[2]))
-    #     self.outfile.write('\n')
+    def walk_uub(self, s_u, e_b):
+        limit = 10
+
+        us_list = []
+        for us in self.bu_dict.get(e_b, []):
+            sim = self.get_sim(self.item_embedding[e_b], self.user_embedding[us])
+            us_list.append([us, sim])
+        us_list.sort(key=lambda x: x[1], reverse=True)
+        us_list = us_list[:limit]
+
+        u_list = []
+        for us in us_list:
+            uss = us[0]
+            if s_u in self.uu_dict and uss in self.uu_dict[s_u] and uss != s_u:
+                sim = us[1]
+                if sim > 0.7:
+                    u_list.append([uss, sim])
+        u_list.sort(key=lambda x: x[1], reverse=True)
+        u_list = u_list[:5]
+
+        if (len(u_list) == 0):
+            return
+        self.outfile.write(str(s_u) + ',' + str(e_b) + '\t' + str(len(u_list)))
+        for uu in u_list:
+            path = ['u' + str(s_u), 'u' + str(uu[0]), 'b' + str(e_b)]
+            self.outfile.write('\t' + '-'.join(path) + ' ' + str(uu[2]))
+        self.outfile.write('\n')
     #
     # def walk_ummm(self, s_u, e_b):
     #     limit = 10
