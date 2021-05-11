@@ -22,6 +22,8 @@ def parse_args():
                         help='the length of random walk .')
     parser.add_argument('--metapath', type=str, default="ubub",
                         help='the metapath for yelp dataset. Recommend: UBUB, UBCaB, UUB, UBCiB')
+    parser.add_argument('--theta', type=float, default=0.85,
+                        help='the threshold of similarity')
     return parser.parse_args()
 
 
@@ -29,6 +31,7 @@ class MetapathBasePathSample:
     def __init__(self, **kargs):
         self.metapath = kargs.get('metapath')
         self.walk_num = kargs.get('walk_num')
+        self.theta = kargs.get('theta')
         self.K = kargs.get('K')
         self.ub_dict = dict()
         self.bu_dict = dict()
@@ -143,7 +146,7 @@ class MetapathBasePathSample:
                 uu = u[0]
                 if bb in self.bu_dict and uu in self.bu_dict[bb] and uu != s_u and bb != e_b:
                     sim = (self.get_sim(self.user_embedding[uu], self.item_embedding[bb]) + u[1] + b[1]) / 3.0
-                    if sim > 0.7:
+                    if sim > self.theta:
                         bu_list.append([bb, uu, sim])
         bu_list.sort(key=lambda x: x[2], reverse=True)
         bu_list = bu_list[:min(5, len(bu_list))]
@@ -176,7 +179,7 @@ class MetapathBasePathSample:
                 caca = ca[0]
                 if bb in self.bca_dict and caca in self.bca_dict[bb] and bb != e_b:
                     sim = b[1]
-                    if sim > 0.7:
+                    if sim > self.theta:
                         bca_list.append([bb, caca, sim])
         bca_list.sort(key=lambda x: x[2], reverse=True)
         bca_list = bca_list[:min(5, len(bca_list))]
@@ -209,7 +212,7 @@ class MetapathBasePathSample:
                 cici = ci[0]
                 if bb in self.bci_dict and cici in self.bci_dict[bb] and bb != e_b:
                     sim = b[1]
-                    if sim > 0.7:
+                    if sim > self.theta:
                         bci_list.append([bb, cici, sim])
         bci_list.sort(key=lambda x: x[2], reverse=True)
         bci_list = bci_list[:min(5, len(bci_list))]
@@ -237,7 +240,7 @@ class MetapathBasePathSample:
             uss = us[0]
             if s_u in self.uu_dict and uss in self.uu_dict[s_u] and uss != s_u:
                 sim = us[1]
-                if sim > 0.7:
+                if sim > self.theta:
                     u_list.append([uss, sim])
         u_list.sort(key=lambda x: x[1], reverse=True)
         u_list = u_list[:5]
@@ -270,7 +273,7 @@ class MetapathBasePathSample:
     #             mss = ms[0]
     #             if mff in self.mm_dict and mss in self.mm_dict[mff] and mff != e_b:
     #                 sim = mf[1]
-    #                 if sim > 0.7:
+    #                 if sim > self.theta:
     #                     mm_list.append([mff, mss, sim])
     #     mm_list.sort(key=lambda x: x[2], reverse=True)
     #     mm_list = mm_list[:5]
@@ -516,6 +519,7 @@ if __name__ == '__main__':
     args = parse_args()
     walk_num = args.walk_num
     metapath = args.metapath
+    theta = args.theta
     K = 1
 
     # print ("walk_num : ", walk_num, "T : ", type(walk_num))
@@ -523,4 +527,4 @@ if __name__ == '__main__':
     outfile_name = '../data/yelp/yelp.' + metapath + '_' + str(walk_num) + '_' + str(K)
     print('outfile name = ', outfile_name)
     MetapathBasePathSample(uufile=uufile, bcafile=bcafile, ubfile=ubfile, bcifile=bcifile, ucofile=ucofile,
-                           K=K, walk_num=walk_num, metapath=metapath, outfile_name=outfile_name)
+                           K=K, walk_num=walk_num, theta=theta, metapath=metapath, outfile_name=outfile_name)

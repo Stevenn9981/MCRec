@@ -174,7 +174,7 @@ def get_ubub_embedding(ubub_input, path_num, timestamps, length, user_latent, it
 def get_uub_embedding(ubub_input, path_num, timestamps, length, user_latent, item_latent, path_attention_layer_1,
                        path_attention_layer_2):
     conv_ubub = Conv1D(filters=128,
-                       kernel_size=4,
+                       kernel_size=3,
                        activation='relu',
                        kernel_regularizer=l2(0.0),
                        kernel_initializer='glorot_uniform',
