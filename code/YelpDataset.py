@@ -203,10 +203,13 @@ class Dataset(object):
                     tmp = path.split(' ')[0].split('-')
                     node_list = []
                     for node in tmp:
-                        print(node)
                         if node[0] != 'c':
-                            index = int(node[1:])
-                            node_list.append([self.types[node[0]], index])
+                            try:
+                                index = int(node[1:])
+                                node_list.append([self.types[node[0]], index])
+                            except:
+                                print(node)
+                                print(node[0])
                         else:
                             index = int(node[2:])
                             node_list.append([self.types[node[0:2]], index])
