@@ -192,6 +192,7 @@ def get_uub_embedding(ubub_input, path_num, timestamps, length, user_latent, ite
         tmp_output = Dropout(0.5)(tmp_output)
         output = concatenate([output, tmp_output])
 
+
     output = Reshape((path_num, 128))(output)
     # output = path_attention(user_latent, item_latent, output, 128, 64, path_attention_layer_1, path_attention_layer_2, 'uub')
     output = GlobalMaxPooling1D()(output)
