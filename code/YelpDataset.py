@@ -176,19 +176,19 @@ class Dataset(object):
         timestamps = 0
         length = 2
         ctn = 0
-        with open(filename) as infile:
-            line = infile.readline()
-            while line != None and line != "":
-                arr = line.split('\t')
-                u, i = arr[0].split(',')
-                u = int(u)
-                i = int(i)
-                path_dict[(u, i)] = []
-                path_num = max(int(arr[1]), path_num)
-                timestamps = len(arr[2].strip().split('-'))
-                line = infile.readline()
-                ctn += 1
-        print(ctn, path_num, timestamps, length)
+        # with open(filename) as infile:
+        #     line = infile.readline()
+        #     while line != None and line != "":
+        #         arr = line.split('\t')
+        #         u, i = arr[0].split(',')
+        #         u = int(u)
+        #         i = int(i)
+        #         path_dict[(u, i)] = []
+        #         path_num = max(int(arr[1]), path_num)
+        #         timestamps = len(arr[2].strip().split('-'))
+        #         line = infile.readline()
+        #         ctn += 1
+        # print(ctn, path_num, timestamps, length)
         with open(filename) as infile:
             line = infile.readline()
             while line != None and line != "":
@@ -196,6 +196,8 @@ class Dataset(object):
                 u, i = arr[0].split(',')
                 u, i = int(u), int(i)
                 path_dict[(u, i)] = []
+                path_num = max(int(arr[1]), path_num)
+                timestamps = len(arr[2].strip().split('-'))
 
                 for path in arr[2:]:
                     tmp = path.split(' ')[0].split('-')
