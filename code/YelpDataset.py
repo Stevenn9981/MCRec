@@ -200,8 +200,12 @@ class Dataset(object):
                     tmp = path.split(' ')[0].split('-')
                     node_list = []
                     for node in tmp:
-                        index = int(node[1:])
-                        node_list.append([self.types[node[0]], index])
+                        if node[0] != 'c':
+                            index = int(node[1:])
+                            node_list.append([self.types[node[0]], index])
+                        else:
+                            index = int(node[2:])
+                            node_list.append([self.types[node[0:2]], index])
                     path_dict[(u, i)].append(node_list)
                 line = infile.readline()
         return path_dict, path_num, timestamps
