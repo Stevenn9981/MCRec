@@ -22,7 +22,7 @@ def parse_args():
                         help='the length of random walk .')
     parser.add_argument('--metapath', type=str, default="ubub",
                         help='the metapath for yelp dataset. Recommend: UBUB, UBCaB, UUB, UBCiB')
-    parser.add_argument('--theta', type=float, default=0.85,
+    parser.add_argument('--theta', type=float, default=0.8,
                         help='the threshold of similarity')
     return parser.parse_args()
 
@@ -105,7 +105,7 @@ class MetapathBasePathSample:
             ctn += 1
             # print u, m
             if ctn % 10000 == 0:
-                print('%d [%.4f]\n' % (ctn, time.time() - t1))
+                print('%d [%.4f] [%s]\n' % (ctn, time.time() - t1, self.metapath))
             if self.metapath == 'ubcib':
                 self.walk_ubcib(u, b)
             elif self.metapath == 'ubcab':

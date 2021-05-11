@@ -65,7 +65,6 @@ def evaluate_model(model, user_feature, item_feature, type_feature, num_users, n
 
     global _user_feature
     global _item_feature
-    global _type_feature
     global _features
 
     _model = model
@@ -84,7 +83,6 @@ def evaluate_model(model, user_feature, item_feature, type_feature, num_users, n
 
     _user_feature = user_feature
     _item_feature = item_feature
-    _type_feature = type_feature
     _features = [user_feature, item_feature, type_feature]
     ps, rs, ndcgs = [], [], []
     if (num_thread > 1):  # Multi-thread
@@ -136,8 +134,6 @@ def eval_one_rating(idx):
                         umtm_input[k][p_i][p_j] = _user_feature[index]
                     elif type_id == 2:
                         umtm_input[k][p_i][p_j] = _item_feature[index]
-                    elif type_id == 3:
-                        umtm_input[k][p_i][p_j] = _type_feature[index]
 
         if (u, i) in _path_umum:
             for p_i in range(len(_path_umum[(u, i)])):
@@ -148,8 +144,6 @@ def eval_one_rating(idx):
                         umum_input[k][p_i][p_j] = _user_feature[index]
                     elif type_id == 2:
                         umum_input[k][p_i][p_j] = _item_feature[index]
-                    elif type_id == 3:
-                        umum_input[k][p_i][p_j] = _type_feature[index]
 
         if (u, i) in _path_umtmum:
             for p_i in range(len(_path_umtmum[(u, i)])):
@@ -160,8 +154,6 @@ def eval_one_rating(idx):
                         umtmum_input[k][p_i][p_j] = _user_feature[index]
                     elif type_id == 2:
                         umtmum_input[k][p_i][p_j] = _item_feature[index]
-                    elif type_id == 3:
-                        umtmum_input[k][p_i][p_j] = _type_feature[index]
         if (u, i) in _path_uuum:
             for p_i in range(len(_path_uuum[(u, i)])):
                 for p_j in range(len(_path_uuum[(u, i)][p_i])):
@@ -171,8 +163,6 @@ def eval_one_rating(idx):
                         uuum_input[k][p_i][p_j] = _user_feature[index]
                     elif type_id == 2:
                         uuum_input[k][p_i][p_j] = _item_feature[index]
-                    elif type_id == 3:
-                        uuum_input[k][p_i][p_j] = _type_feature[index]
         k += 1
 
     # print umtm_input.shape

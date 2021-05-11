@@ -453,8 +453,6 @@ def get_train_instances(user_feature, item_feature, type_feature,
                                     _ubcab_input[k][p_i][p_j] = user_feature[index]
                                 elif type_id == 2:
                                     _ubcab_input[k][p_i][p_j] = item_feature[index]
-                                elif type_id == 3:
-                                    _ubcab_input[k][p_i][p_j] = type_feature[index]
 
                     if (u, i) in path_ubub:
                         for p_i in range(len(path_ubub[(u, i)])):
@@ -465,8 +463,6 @@ def get_train_instances(user_feature, item_feature, type_feature,
                                     _ubub_input[k][p_i][p_j] = user_feature[index]
                                 elif type_id == 2:
                                     _ubub_input[k][p_i][p_j] = item_feature[index]
-                                elif type_id == 3:
-                                    _ubub_input[k][p_i][p_j] = type_feature[index]
 
                     if (u, i) in path_ubcib:
                         for p_i in range(len(path_ubcib[(u, i)])):
@@ -477,8 +473,6 @@ def get_train_instances(user_feature, item_feature, type_feature,
                                     _ubcib_input[k][p_i][p_j] = user_feature[index]
                                 elif type_id == 2:
                                     _ubcib_input[k][p_i][p_j] = item_feature[index]
-                                elif type_id == 3:
-                                    _ubcib_input[k][p_i][p_j] = type_feature[index]
 
                     if (u, i) in path_uub:
                         for p_i in range(len(path_uub[(u, i)])):
@@ -489,8 +483,6 @@ def get_train_instances(user_feature, item_feature, type_feature,
                                     _uub_input[k][p_i][p_j] = user_feature[index]
                                 elif type_id == 2:
                                     _uub_input[k][p_i][p_j] = item_feature[index]
-                                elif type_id == 3:
-                                    _uub_input[k][p_i][p_j] = type_feature[index]
                     _labels[k] = 1.0
                     k += 1
                     # negative instances
@@ -511,8 +503,6 @@ def get_train_instances(user_feature, item_feature, type_feature,
                                         _ubcab_input[k][p_i][p_j] = user_feature[index]
                                     elif type_id == 2:
                                         _ubcab_input[k][p_i][p_j] = item_feature[index]
-                                    elif type_id == 3:
-                                        _ubcab_input[k][p_i][p_j] = type_feature[index]
 
                         if (u, j) in path_ubub:
                             for p_i in range(len(path_ubub[(u, j)])):
@@ -523,8 +513,6 @@ def get_train_instances(user_feature, item_feature, type_feature,
                                         _ubub_input[k][p_i][p_j] = user_feature[index]
                                     elif type_id == 2:
                                         _ubub_input[k][p_i][p_j] = item_feature[index]
-                                    elif type_id == 3:
-                                        _ubub_input[k][p_i][p_j] = type_feature[index]
                         if (u, j) in path_ubcib:
                             for p_i in range(len(path_ubcib[(u, j)])):
                                 for p_j in range(len(path_ubcib[(u, j)][p_i])):
@@ -534,8 +522,6 @@ def get_train_instances(user_feature, item_feature, type_feature,
                                         _ubcib_input[k][p_i][p_j] = user_feature[index]
                                     elif type_id == 2:
                                         _ubcib_input[k][p_i][p_j] = item_feature[index]
-                                    elif type_id == 3:
-                                        _ubcib_input[k][p_i][p_j] = type_feature[index]
 
                         if (u, j) in path_uub:
                             for p_i in range(len(path_uub[(u, j)])):
@@ -546,8 +532,6 @@ def get_train_instances(user_feature, item_feature, type_feature,
                                         _uub_input[k][p_i][p_j] = user_feature[index]
                                     elif type_id == 2:
                                         _uub_input[k][p_i][p_j] = item_feature[index]
-                                    elif type_id == 3:
-                                        _uub_input[k][p_i][p_j] = type_feature[index]
                         _labels[k] = 0.0
                         k += 1
                 yield ([_user_input, _item_input,

@@ -95,7 +95,6 @@ class MetapathBasePathSample:
         ctn = 0
         t1 = time.time()
         avg = 0
-        print(len(pair_list))
         for u, m in pair_list:
             ctn += 1
             # print u, m
