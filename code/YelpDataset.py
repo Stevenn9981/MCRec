@@ -12,6 +12,12 @@ class Dataset(object):
         Constructor
         '''
         self.types = {'u': 1, 'b': 2, 'ca': 3, 'ci': 4}
+
+        self.path_ubcab, self.ubcab_path_num, self.ubcab_timestamp = self.load_path_as_map(path + ".ubcab_5_1")
+        self.path_ubub, self.ubub_path_num, self.ubub_timestamp = self.load_path_as_map(path + '.ubub_5_1')
+        self.path_ubcib, self.ubcib_path_num, self.ubcib_timestamp = self.load_path_as_map(path + '.ubcib_5_1')
+        self.path_uub, self.uub_path_num, self.uub_timestamp = self.load_path_as_map(path + '.uub_5_1')
+
         self.trainMatrix = self.load_rating_file_as_matrix(path + ".train.rating")
         self.num_users, self.num_items = self.trainMatrix.shape[0], self.trainMatrix.shape[1]
 
@@ -25,11 +31,6 @@ class Dataset(object):
         self.item_feature = np.random.rand(self.num_items, 64)
         self.type_feature = np.random.rand(19, 64)
         self.fea_size = len(self.user_feature[1])
-
-        self.path_ubcab, self.ubcab_path_num, self.ubcab_timestamp = self.load_path_as_map(path + ".ubcab_5_1")
-        self.path_ubub, self.ubub_path_num, self.ubub_timestamp = self.load_path_as_map(path + '.ubub_5_1')
-        self.path_ubcib, self.ubcib_path_num, self.ubcib_timestamp = self.load_path_as_map(path + '.ubcib_5_1')
-        self.path_uub, self.uub_path_num, self.uub_timestamp = self.load_path_as_map(path + '.uub_5_1')
         assert len(self.testRatings) == len(self.testNegatives)
 
     def load_rating_file_as_list(self, filename):
@@ -200,6 +201,7 @@ class Dataset(object):
                     tmp = path.split(' ')[0].split('-')
                     node_list = []
                     for node in tmp:
+                        print(node)
                         if node[0] != 'c':
                             index = int(node[1:])
                             node_list.append([self.types[node[0]], index])
