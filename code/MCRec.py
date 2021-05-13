@@ -47,9 +47,9 @@ def parse_args():
                         help="Embedding size for user and item embedding")
     parser.add_argument('--latent_layer_dim', nargs='?', default='[512, 256, 128, 64]',
                         help="Embedding size for each layer")
-    parser.add_argument('--num_neg', type=int, default=1,
+    parser.add_argument('--num_neg', type=int, default=4,
                         help='Number of negative instances to pair with a positive instance.')
-    parser.add_argument('--K', type=int, default=3,
+    parser.add_argument('--K', type=int, default=10,
                         help='Number of topK in experiments.')
     parser.add_argument('--metapath', type=str, default='all',
                         help='Specify meta-paths. "+" or "-" means only use or remove. "all" means use all meta-paths' )
