@@ -107,6 +107,8 @@ class Dataset(object):
                 num_items = max(num_items, i)
                 line = f.readline()
         # Construct matrix
+        if 'yelp' in filename:
+            num_users, num_items = 16239, 14284
         mat = sp.dok_matrix((num_users + 1, num_items + 1), dtype=np.float32)
         train_list = []
         with open(filename, "r") as f:
