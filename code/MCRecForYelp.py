@@ -659,6 +659,7 @@ if __name__ == '__main__':
             print('Iteration %d [%.1f s]: Precision@3 = %.4f, Recall@3 = %.4f, NDCG@3 = %.4f, loss = %.4f [%.1f s]'
                   % (epoch, t2 - t1, p, r, ndcg, loss, time() - t2))
 
+            t2 = time()
             (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
                                              path_ubcab,
                                              path_ubub, path_ubcib,
@@ -669,6 +670,7 @@ if __name__ == '__main__':
             print('Iteration %d [%.1f s]: Precision@10 = %.4f, Recall@10 = %.4f, NDCG@10 = %.4f, loss = %.4f [%.1f s]'
                   % (epoch, t2 - t1, p, r, ndcg, loss, time() - t2))
 
+            t2 = time()
             (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
                                              path_ubcab,
                                              path_ubub, path_ubcib,
