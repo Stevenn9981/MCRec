@@ -12,7 +12,8 @@ import keras
 from keras import backend as K
 from keras import initializers
 from keras.models import Sequential, Model, load_model, save_model
-from keras.layers import Dense, Lambda, Activation, LSTM, Reshape, Conv1D, GlobalMaxPooling1D, Dropout, BatchNormalization
+from keras.layers import Dense, Lambda, Activation, LSTM, Reshape, Conv1D, GlobalMaxPooling1D, Dropout, \
+    BatchNormalization
 from keras.layers import Embedding, Input, Dense, merge, Reshape, Merge, Flatten, concatenate, RepeatVector, multiply
 from keras.layers.normalization import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
@@ -52,7 +53,7 @@ def parse_args():
     parser.add_argument('--K', type=int, default=3,
                         help='Number of topK in experiments.')
     parser.add_argument('--metapath', type=str, default='all',
-                        help='Specify meta-paths. "+" or "-" means only use or remove. "all" means use all meta-paths' )
+                        help='Specify meta-paths. "+" or "-" means only use or remove. "all" means use all meta-paths')
 
     return parser.parse_args()
 
@@ -90,15 +91,15 @@ def path_attention(user_latent, item_latent, path_latent, latent_size, att_size,
 
 
 def get_ubcib_embedding(ubcib_input, path_num, timestamps, length, user_latent, item_latent, path_attention_layer_1,
-                         path_attention_layer_2):
+                        path_attention_layer_2):
     conv_ubcib = Conv1D(filters=128,
-                         kernel_size=4,
-                         activation='relu',
-                         kernel_regularizer=l2(0.0),
-                         kernel_initializer='glorot_uniform',
-                         padding='valid',
-                         strides=1,
-                         name='ubcib_conv')
+                        kernel_size=4,
+                        activation='relu',
+                        kernel_regularizer=l2(0.0),
+                        kernel_initializer='glorot_uniform',
+                        padding='valid',
+                        strides=1,
+                        name='ubcib_conv')
 
     path_input = Lambda(slice, output_shape=(timestamps, length), arguments={'index': 0})(ubcib_input)
     output = conv_ubcib(path_input)
@@ -118,15 +119,15 @@ def get_ubcib_embedding(ubcib_input, path_num, timestamps, length, user_latent, 
 
 
 def get_ubcab_embedding(ubcab_input, path_num, timestamps, length, user_latent, item_latent, path_attention_layer_1,
-                       path_attention_layer_2):
+                        path_attention_layer_2):
     conv_ubcab = Conv1D(filters=128,
-                       kernel_size=4,
-                       activation='relu',
-                       kernel_regularizer=l2(0.0),
-                       kernel_initializer='glorot_uniform',
-                       padding='valid',
-                       strides=1,
-                       name='ubcab_conv')
+                        kernel_size=4,
+                        activation='relu',
+                        kernel_regularizer=l2(0.0),
+                        kernel_initializer='glorot_uniform',
+                        padding='valid',
+                        strides=1,
+                        name='ubcab_conv')
 
     path_input = Lambda(slice, output_shape=(timestamps, length), arguments={'index': 0})(ubcab_input)
     output = GlobalMaxPooling1D()(conv_ubcab(path_input))
@@ -172,7 +173,7 @@ def get_ubub_embedding(ubub_input, path_num, timestamps, length, user_latent, it
 
 
 def get_uub_embedding(ubub_input, path_num, timestamps, length, user_latent, item_latent, path_attention_layer_1,
-                       path_attention_layer_2):
+                      path_attention_layer_2):
     conv_ubub = Conv1D(filters=128,
                        kernel_size=3,
                        activation='relu',
@@ -191,7 +192,6 @@ def get_uub_embedding(ubub_input, path_num, timestamps, length, user_latent, ite
         tmp_output = GlobalMaxPooling1D()(conv_ubub(path_input))
         tmp_output = Dropout(0.5)(tmp_output)
         output = concatenate([output, tmp_output])
-
 
     output = Reshape((path_num, 128))(output)
     # output = path_attention(user_latent, item_latent, output, 128, 64, path_attention_layer_1, path_attention_layer_2, 'uub')
@@ -302,13 +302,13 @@ def get_model(usize, isize, path_nums, timestamps, length, layers=[20, 10], reg_
                                    name='path_attention_layer_2')
 
     ubcab_latent = get_ubcab_embedding(ubcab_input, path_nums[0], timestamps[0], length, user_latent, item_latent,
-                                     path_attention_layer_1, path_attention_layer_2)
+                                       path_attention_layer_1, path_attention_layer_2)
     ubub_latent = get_ubub_embedding(ubub_input, path_nums[1], timestamps[1], length, user_latent, item_latent,
                                      path_attention_layer_1, path_attention_layer_2)
     ubcib_latent = get_ubcib_embedding(ubcib_input, path_nums[2], timestamps[2], length, user_latent, item_latent,
-                                         path_attention_layer_1, path_attention_layer_2)
+                                       path_attention_layer_1, path_attention_layer_2)
     uub_latent = get_uub_embedding(uub_input, path_nums[3], timestamps[3], length, user_latent, item_latent,
-                                     path_attention_layer_1, path_attention_layer_2)
+                                   path_attention_layer_1, path_attention_layer_2)
 
     path_output = concatenate([
         ubcab_latent,
@@ -378,6 +378,7 @@ def get_model(usize, isize, path_nums, timestamps, length, layers=[20, 10], reg_
                       activation='relu',
                       name='item_layer%d' % idx)
         output = layer(output)
+    output = BatchNormalization()(output)
 
     # user_output = concatenate([user_atten, path_output])
     # for idx in xrange(0, len(layers)):
