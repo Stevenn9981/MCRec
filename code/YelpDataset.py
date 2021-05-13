@@ -108,6 +108,8 @@ class Dataset(object):
                 num_items = max(num_items, i)
                 line = f.readline()
         # Construct matrix
+        if 'yelp' in filename:
+            num_users, num_items = 16239, 14284
         mat = sp.dok_matrix((num_users + 1, num_items + 1), dtype=np.float32)
         train_list = []
         with open(filename, "r") as f:
@@ -203,7 +205,7 @@ class Dataset(object):
 
 
 if __name__ == '__main__':
-    dataset = Dataset('../data/ml-100k')
+    dataset = Dataset('../data/yelp')
     print(dataset.user_feature)
     print(dataset.item_feature)
     print(dataset.type_feature)
