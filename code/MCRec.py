@@ -49,7 +49,7 @@ def parse_args():
                         help="Embedding size for each layer")
     parser.add_argument('--num_neg', type=int, default=1,
                         help='Number of negative instances to pair with a positive instance.')
-    parser.add_argument('--K', type=int, default=10,
+    parser.add_argument('--K', type=int, default=3,
                         help='Number of topK in experiments.')
     parser.add_argument('--metapath', type=str, default='all',
                         help='Specify meta-paths. "+" or "-" means only use or remove. "all" means use all meta-paths' )
