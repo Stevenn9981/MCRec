@@ -224,7 +224,7 @@ def eval():
         ranklist = heapq.nlargest(_K, item_score, key=item_score.get)
 
         pItem = preItems[50]
-
+        print(pItem, ranklist)
         p = getHitRatio(ranklist, [pItem])
         r = getR(ranklist, [pItem])
         ndcg = getNDCG(ranklist, [pItem])
@@ -233,6 +233,7 @@ def eval():
         ns.append(ndcg)
 
     print('Sorting time: ', time() - time1)
+    print(hs)
     return (hs, rs, ns)
 
 
