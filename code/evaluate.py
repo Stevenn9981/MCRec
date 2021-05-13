@@ -222,6 +222,9 @@ def eval():
         for Item in preItems:
             item_score[Item] = map_item_score[(user, Item)]
         ranklist = heapq.nlargest(_K, item_score, key=item_score.get)
+
+        pItem = preItems[50]
+
         p = getHitRatio(ranklist, [pItem])
         r = getR(ranklist, [pItem])
         ndcg = getNDCG(ranklist, [pItem])
