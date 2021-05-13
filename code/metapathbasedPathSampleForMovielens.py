@@ -478,12 +478,12 @@ class MetapathBasePathSample:
 
 
 if __name__ == '__main__':
-    umfile = '../data/ml-100k.train.rating'
-    uafile = '../data/ml-100k.ua'
-    uofile = '../data/ml-100k.uo'
-    mtfile = '../data/ml-100k.mt'
-    uufile = '../data/ml-100k.uu_knn_50'
-    mmfile = '../data/ml-100k.mm_knn_50'
+    umfile = '../data/ml-100k/ml-100k.train.rating'
+    uafile = '../data/ml-100k/ml-100k.ua'
+    uofile = '../data/ml-100k/ml-100k.uo'
+    mtfile = '../data/ml-100k/ml-100k.mt'
+    uufile = '../data/ml-100k/ml-100k.uu_knn_50'
+    mmfile = '../data/ml-100k/ml-100k.mm_knn_50'
     # walk_num = 5
     # metapath = 'umtm'
 
@@ -494,7 +494,7 @@ if __name__ == '__main__':
 
     # print ("walk_num : ", walk_num, "T : ", type(walk_num))
     # print ("meta : ", metapath, "T : ", type(metapath))
-    outfile_name = '../data/ml-100k.' + metapath + '_' + str(walk_num) + '_' + str(K)
+    outfile_name = '../data/ml-100k/ml-100k.' + metapath + '_' + str(walk_num) + '_' + str(K)
     print('outfile name = ', outfile_name)
     MetapathBasePathSample(uufile=uufile, mmfile=mmfile, umfile=umfile, uafile=uafile, uofile=uofile, mtfile=mtfile,
                            K=K, walk_num=walk_num, metapath=metapath, outfile_name=outfile_name)

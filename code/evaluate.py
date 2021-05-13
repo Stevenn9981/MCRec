@@ -95,11 +95,16 @@ def evaluate_model(model, user_feature, item_feature, type_feature, num_users, n
         return (hits, ndcgs)
     # Single thread
     print("len test: ", len(_testRatings))
+
+
+
     for idx in range(len(_testRatings)):
         (p, r, ndcg) = eval_one_rating(idx)
         ps.extend(p)
         rs.extend(r)
         ndcgs.extend(ndcg)
+
+
     return (ps, rs, ndcgs)
 
 
@@ -118,6 +123,8 @@ def eval_one_rating(idx):
     umum_input = np.zeros((len(items), _path_nums[1], _timestamps[1], _length))
     umtmum_input = np.zeros((len(items), _path_nums[2], _timestamps[2], _length))
     uuum_input = np.zeros((len(items), _path_nums[3], _timestamps[3], _length))
+
+    time1 = time()
 
     k = 0
     for i in items:
@@ -165,11 +172,14 @@ def eval_one_rating(idx):
                         uuum_input[k][p_i][p_j] = _item_feature[index]
         k += 1
 
+    print('path_input process time: ', time() - time1)
     # print umtm_input.shape
     predictions = _model.predict(
         [np.array(user_input), np.array(item_input), umtm_input, umum_input, umtmum_input, uuum_input],
         batch_size=256, verbose=0)
     # print atten.shape
+
+    print('Prediction time: ', time() - time1)
 
     hs = []
     rs = []
@@ -192,6 +202,8 @@ def eval_one_rating(idx):
         hs.append(p)
         rs.append(r)
         ns.append(ndcg)
+
+    print('Sorting time: ', time() - time1)
     return (hs, rs, ns)
 
 
