@@ -125,6 +125,7 @@ def eval_one_rating(idx):
     uuum_input = np.zeros((len(items), _path_nums[3], _timestamps[3], _length))
 
     time1 = time()
+    print('Timing start!')
 
     k = 0
     for i in items:
