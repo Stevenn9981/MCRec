@@ -107,6 +107,8 @@ class Dataset(object):
                 num_items = max(num_items, i)
                 line = f.readline()
         # Construct matrix
+        print(filename)
+        print('yelp' in filename)
         if 'yelp' in filename:
             print('yes, it contains')
             num_users, num_items = 16239, 14284
