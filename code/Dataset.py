@@ -108,6 +108,7 @@ class Dataset(object):
                 line = f.readline()
         # Construct matrix
         if 'yelp' in filename:
+            print('yes, it contains')
             num_users, num_items = 16239, 14284
         mat = sp.dok_matrix((num_users + 1, num_items + 1), dtype=np.float32)
         train_list = []
