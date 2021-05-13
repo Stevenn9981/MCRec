@@ -149,23 +149,6 @@ class Dataset(object):
                 # type_feature[t] = list()
                 for j in range(len(arr[1:])):
                     type_feature[t][j] = float(arr[j + 1])
-        '''
-        with open(age_fea_file) as infile:
-            for line in infile.readlines():
-                arr = line.strip().split(' ')
-                a = int(arr[0])
-                age_feature[a] = list()
-                for f in arr[1:]:
-                    age_feature[a].append(float(f))
-
-        with open(occ_fea_file) as infile:
-            for line in infile.readlines():
-                arr = line.strip().split(' ')
-                o = int(arr[0])
-                occ_feature[o] = list()
-                for f in arr[1:]:
-                    occ_feature[o].append(float(f))
-        '''
         return user_feature, item_feature, type_feature, age_feature, occ_feature
 
     def load_path_as_map(self, filename):
