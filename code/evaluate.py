@@ -101,7 +101,13 @@ def evaluate_model(model, user_feature, item_feature, type_feature, num_users, n
     #     ps.extend(p)
     #     rs.extend(r)
     #     ndcgs.extend(ndcg)
-    ps, rs, ndcgs = eval()
+    for idx in random.sample(range(len(_testRatings)), 100):
+        (p, r, ndcg) = eval_one_rating(idx)
+        ps.extend(p)
+        rs.extend(r)
+        ndcgs.extend(ndcg)
+
+    # ps, rs, ndcgs = eval()
     return (ps, rs, ndcgs)
 
 
