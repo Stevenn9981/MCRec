@@ -174,6 +174,7 @@ def eval_one_rating(idx):
         k += 1
 
     print('path_input process time: ', time() - time1)
+    print(len(item_input))
     # print umtm_input.shape
     predictions = _model.predict(
         [np.array(user_input), np.array(item_input), umtm_input, umum_input, umtmum_input, uuum_input],
