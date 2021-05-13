@@ -231,6 +231,7 @@ def metapath_attention(user_latent, item_latent, metapath_latent, latent_size, a
 
     atten = Lambda(lambda x: K.softmax(x), name='metapath_attention_softmax')(output)
     output = Lambda(lambda x: K.sum(x[0] * K.expand_dims(x[1], -1), 1))([metapath_latent, atten])
+    output = tf.nn.l2_normalize(output)
     return output
 
 
@@ -246,6 +247,7 @@ def user_attention(user_latent, path_output):
                    name='user_attention_layer')(inputs)
     atten = Lambda(lambda x: K.softmax(x), name='user_attention_softmax')(output)
     output = multiply([user_latent, atten])
+    output = tf.nn.l2_normalize(output)
     return output
 
 
@@ -261,6 +263,7 @@ def item_attention(item_latent, path_output):
                    name='item_attention_layer')(inputs)
     atten = Lambda(lambda x: K.softmax(x), name='item_attention_softmax')(output)
     output = multiply([item_latent, atten])
+    output = tf.nn.l2_normalize(output)
     return output
 
 
