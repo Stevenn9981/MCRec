@@ -96,12 +96,12 @@ def evaluate_model(model, user_feature, item_feature, type_feature, num_users, n
     # Single thread
     print("len test: ", len(_testRatings))
 
-    for idx in range(len(_testRatings)):
-        (p, r, ndcg) = eval_one_rating(idx)
-        ps.extend(p)
-        rs.extend(r)
-        ndcgs.extend(ndcg)
-
+    # for idx in range(len(_testRatings)):
+    #     (p, r, ndcg) = eval_one_rating(idx)
+    #     ps.extend(p)
+    #     rs.extend(r)
+    #     ndcgs.extend(ndcg)
+    ps, rs, ndcgs = eval()
     return (ps, rs, ndcgs)
 
 
