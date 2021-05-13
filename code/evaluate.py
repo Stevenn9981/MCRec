@@ -96,16 +96,134 @@ def evaluate_model(model, user_feature, item_feature, type_feature, num_users, n
     # Single thread
     print("len test: ", len(_testRatings))
 
-
-
     for idx in range(len(_testRatings)):
         (p, r, ndcg) = eval_one_rating(idx)
         ps.extend(p)
         rs.extend(r)
         ndcgs.extend(ndcg)
 
-
     return (ps, rs, ndcgs)
+
+
+def eval():
+    items = []
+    user_input = []
+    item_input = []
+    map_item_score = {}
+    users = []
+    for idx, rating in enumerate(_testRatings):
+        items += _testNegatives[idx]
+        u = rating[0]
+        gtItems = rating[1:]
+        # pItems += gtItems
+        # items.append(gtItem)
+        items += gtItems
+        users += [u] * (len(_testNegatives[idx]) + len(gtItems))
+        user_input += [u] * 101 * len(gtItems)
+        for pItem in gtItems:
+            item_input += [pItem]
+            nItems = random.sample(_testNegatives[idx], 100)
+            item_input += nItems
+
+    umtm_input = np.zeros((len(items), _path_nums[0], _timestamps[0], _length))
+    umum_input = np.zeros((len(items), _path_nums[1], _timestamps[1], _length))
+    umtmum_input = np.zeros((len(items), _path_nums[2], _timestamps[2], _length))
+    uuum_input = np.zeros((len(items), _path_nums[3], _timestamps[3], _length))
+
+    # for idx, rating in enumerate(_testRatings):
+    #     # Get prediction scores
+    #     u = rating[0]
+    #     items = _testNegatives[idx]
+    #     gtItems = rating[1:]
+    #     items += gtItems
+
+    time1 = time()
+    print('Timing start!')
+
+    k = 0
+    for index, i in enumerate(items):
+
+        # user_input.append(u)
+        u = users[index]
+        # item_input.append(i)
+
+        if (u, i) in _path_umtm:
+            for p_i in range(len(_path_umtm[(u, i)])):
+                for p_j in range(len(_path_umtm[(u, i)][p_i])):
+                    type_id = _path_umtm[(u, i)][p_i][p_j][0]
+                    index = _path_umtm[(u, i)][p_i][p_j][1]
+                    if type_id == 1:
+                        umtm_input[k][p_i][p_j] = _user_feature[index]
+                    elif type_id == 2:
+                        umtm_input[k][p_i][p_j] = _item_feature[index]
+
+        if (u, i) in _path_umum:
+            for p_i in range(len(_path_umum[(u, i)])):
+                for p_j in range(len(_path_umum[(u, i)][p_i])):
+                    type_id = _path_umum[(u, i)][p_i][p_j][0]
+                    index = _path_umum[(u, i)][p_i][p_j][1]
+                    if type_id == 1:
+                        umum_input[k][p_i][p_j] = _user_feature[index]
+                    elif type_id == 2:
+                        umum_input[k][p_i][p_j] = _item_feature[index]
+
+        if (u, i) in _path_umtmum:
+            for p_i in range(len(_path_umtmum[(u, i)])):
+                for p_j in range(len(_path_umtmum[(u, i)][p_i])):
+                    type_id = _path_umtmum[(u, i)][p_i][p_j][0]
+                    index = _path_umtmum[(u, i)][p_i][p_j][1]
+                    if type_id == 1:
+                        umtmum_input[k][p_i][p_j] = _user_feature[index]
+                    elif type_id == 2:
+                        umtmum_input[k][p_i][p_j] = _item_feature[index]
+        if (u, i) in _path_uuum:
+            for p_i in range(len(_path_uuum[(u, i)])):
+                for p_j in range(len(_path_uuum[(u, i)][p_i])):
+                    type_id = _path_uuum[(u, i)][p_i][p_j][0]
+                    index = _path_uuum[(u, i)][p_i][p_j][1]
+                    if type_id == 1:
+                        uuum_input[k][p_i][p_j] = _user_feature[index]
+                    elif type_id == 2:
+                        uuum_input[k][p_i][p_j] = _item_feature[index]
+        k += 1
+
+    print('path_input process time: ', time() - time1)
+    print(len(item_input))
+    # print umtm_input.shape
+    predictions = _model.predict(
+        [np.array(user_input), np.array(item_input), umtm_input, umum_input, umtmum_input, uuum_input],
+        batch_size=256, verbose=0)
+    # print atten.shape
+
+    print('Prediction time: ', time() - time1)
+
+    hs = []
+    rs = []
+    ns = []
+    for i in range(len(item_input)):
+        user = user_input[i]
+        item = item_input[i]
+        map_item_score[(user, item)] = predictions[i]
+    # items.pop()
+    # Evaluate top rank list
+
+    for i in range(0, len(item_input), 101):
+        user = user_input[i]
+        pItem = item_input[i]
+        preItems = item_input[i:i + 101]
+        item_score = dict()
+        for Item in preItems:
+            item_score[Item] = map_item_score[(user, Item)]
+        ranklist = heapq.nlargest(_K, item_score, key=item_score.get)
+        p = getHitRatio(ranklist, [pItem])
+        r = getR(ranklist, [pItem])
+        ndcg = getNDCG(ranklist, [pItem])
+        hs.append(p)
+        rs.append(r)
+        ns.append(ndcg)
+
+    print('Sorting time: ', time() - time1)
+    return (hs, rs, ns)
 
 
 def eval_one_rating(idx):
