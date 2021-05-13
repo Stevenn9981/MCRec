@@ -250,7 +250,7 @@ def eval_one_rating(idx):
     uuum_input = np.zeros((len(items), _path_nums[3], _timestamps[3], _length))
 
     time1 = time()
-    print('Timing start!')
+    # print('Timing start!')
 
     k = 0
     for i in items:
@@ -298,7 +298,7 @@ def eval_one_rating(idx):
                         uuum_input[k][p_i][p_j] = _item_feature[index]
         k += 1
 
-    print('path_input process time: ', time() - time1)
+    # print('path_input process time: ', time() - time1)
     print(len(item_input))
     # print umtm_input.shape
     predictions = _model.predict(
@@ -306,7 +306,7 @@ def eval_one_rating(idx):
         batch_size=256, verbose=0)
     # print atten.shape
 
-    print('Prediction time: ', time() - time1)
+    # print('Prediction time: ', time() - time1)
 
     hs = []
     rs = []
@@ -330,7 +330,7 @@ def eval_one_rating(idx):
         rs.append(r)
         ns.append(ndcg)
 
-    print('Sorting time: ', time() - time1)
+    # print('Sorting time: ', time() - time1)
     return (hs, rs, ns)
 
 
