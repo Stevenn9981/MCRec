@@ -94,7 +94,7 @@ def evaluate_model(model, user_feature, item_feature, type_feature, num_users, n
         ndcgs = [r[1] for r in res]
         return (hits, ndcgs)
     # Single thread
-    print("len test: ", len(_testRatings))
+    # print("len test: ", len(_testRatings))
 
     # for idx in range(len(_testRatings)):
     #     (p, r, ndcg) = eval_one_rating(idx)
@@ -319,9 +319,9 @@ def eval_one_rating(idx):
     for pItem in gtItems:
         nItems = random.sample(_testNegatives[idx], 100)
         item_score = dict()
-        item_score[pItem] = map_item_score[pItem]
         for nItem in nItems:
             item_score[nItem] = map_item_score[nItem]
+        item_score[pItem] = map_item_score[pItem]
         ranklist = heapq.nlargest(_K, item_score, key=item_score.get)
         p = getHitRatio(ranklist, [pItem])
         r = getR(ranklist, [pItem])

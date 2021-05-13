@@ -613,15 +613,15 @@ if __name__ == '__main__':
 
     # Check Init performance
     t1 = time()
-    (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
-                                     path_ubcab,
-                                     path_ubub,
-                                     path_ubcib,
-                                     path_uub,
-                                     path_nums, timestamps, length, testRatings,
-                                     testNegatives, topK, evaluation_threads)
-    p, r, ndcg = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean()
-    print('Init: Precision = %.4f, Recall = %.4f, NDCG = %.4f [%.1f]' % (p, r, ndcg, time() - t1))
+    # (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
+    #                                  path_ubcab,
+    #                                  path_ubub,
+    #                                  path_ubcib,
+    #                                  path_uub,
+    #                                  path_nums, timestamps, length, testRatings,
+    #                                  testNegatives, topK, evaluation_threads)
+    # p, r, ndcg = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean()
+    # print('Init: Precision = %.4f, Recall = %.4f, NDCG = %.4f [%.1f]' % (p, r, ndcg, time() - t1))
 
     best_p = -1
     p_list, r_list, ndcg_list = [], [], []
@@ -656,7 +656,7 @@ if __name__ == '__main__':
                                              path_nums, timestamps,
                                              length, testRatings, testNegatives, topK, evaluation_threads)
             p, r, ndcg, loss = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean(), hist.history['loss'][0]
-            print('Iteration %d [%.1f s]: Precision = %.4f, Recall = %.4f, NDCG = %.4f, loss = %.4f [%.1f s]'
+            print('Validation: Iteration %d [%.1f s]: Precision = %.4f, Recall = %.4f, NDCG = %.4f, loss = %.4f [%.1f s]'
                   % (epoch, t2 - t1, p, r, ndcg, loss, time() - t2))
 
             # if p > best_p:
