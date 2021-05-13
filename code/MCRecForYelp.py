@@ -654,9 +654,29 @@ if __name__ == '__main__':
                                              path_ubub, path_ubcib,
                                              path_uub,
                                              path_nums, timestamps,
-                                             length, testRatings, testNegatives, topK, evaluation_threads)
+                                             length, testRatings, testNegatives, 3, evaluation_threads)
             p, r, ndcg, loss = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean(), hist.history['loss'][0]
-            print('Validation: Iteration %d [%.1f s]: Precision = %.4f, Recall = %.4f, NDCG = %.4f, loss = %.4f [%.1f s]'
+            print('Iteration %d [%.1f s]: Precision@3 = %.4f, Recall@3 = %.4f, NDCG@3 = %.4f, loss = %.4f [%.1f s]'
+                  % (epoch, t2 - t1, p, r, ndcg, loss, time() - t2))
+
+            (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
+                                             path_ubcab,
+                                             path_ubub, path_ubcib,
+                                             path_uub,
+                                             path_nums, timestamps,
+                                             length, testRatings, testNegatives, 10, evaluation_threads)
+            p, r, ndcg, loss = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean(), hist.history['loss'][0]
+            print('Iteration %d [%.1f s]: Precision@10 = %.4f, Recall@10 = %.4f, NDCG@10 = %.4f, loss = %.4f [%.1f s]'
+                  % (epoch, t2 - t1, p, r, ndcg, loss, time() - t2))
+
+            (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
+                                             path_ubcab,
+                                             path_ubub, path_ubcib,
+                                             path_uub,
+                                             path_nums, timestamps,
+                                             length, testRatings, testNegatives, 50, evaluation_threads)
+            p, r, ndcg, loss = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean(), hist.history['loss'][0]
+            print('Iteration %d [%.1f s]: Precision@50 = %.4f, Recall@50 = %.4f, NDCG@50 = %.4f, loss = %.4f [%.1f s]'
                   % (epoch, t2 - t1, p, r, ndcg, loss, time() - t2))
 
             # if p > best_p:
