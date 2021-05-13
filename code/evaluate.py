@@ -322,10 +322,7 @@ def eval_one_rating(idx):
         for nItem in nItems:
             item_score[nItem] = map_item_score[nItem]
         item_score[pItem] = map_item_score[pItem]
-        print(len(item_score))
-        print(item_score)
         ranklist = heapq.nlargest(_K, item_score, key=item_score.get)
-        print(len(ranklist))
         p = getHitRatio(ranklist, [pItem])
         r = getR(ranklist, [pItem])
         ndcg = getNDCG(ranklist, [pItem])
