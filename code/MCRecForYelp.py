@@ -52,8 +52,8 @@ def parse_args():
                         help='Number of negative instances to pair with a positive instance.')
     parser.add_argument('--K', type=int, default=3,
                         help='Number of topK in experiments.')
-    parser.add_argument('--metapath', type=str, default='all',
-                        help='Specify meta-paths. "+" or "-" means only use or remove. "all" means use all meta-paths')
+    parser.add_argument('--metapath', type=int, default=4,
+                        help='Specify meta-paths numbers')
 
     return parser.parse_args()
 
@@ -268,7 +268,7 @@ def item_attention(item_latent, path_output):
 
 
 def get_model(usize, isize, path_nums, timestamps, length, layers=[20, 10], reg_layers=[0, 0], latent_dim=40,
-              reg_latent=0, metapath='all'):
+              reg_latent=0, metapath=4):
     user_input = Input(shape=(1,), dtype='int32', name='user_input', sparse=False)
     item_input = Input(shape=(1,), dtype='int32', name='item_input', sparse=False)
     ubcab_input = Input(shape=(path_nums[0], timestamps[0], length,), dtype='float32', name='ubcab_input')
@@ -318,51 +318,29 @@ def get_model(usize, isize, path_nums, timestamps, length, layers=[20, 10], reg_
     ])
     path_output = Reshape((4, 128))(path_output)
 
-    if metapath == 'all':
+    if metapath == 4:
         path_output = concatenate([
             ubcab_latent,
             ubub_latent,
             ubcib_latent,
             uub_latent
         ])
-        path_output = Reshape((4, 128))(path_output)
-    elif metapath[0] == '+':
-        if metapath[1:] == 'uub':
-            path_output = uub_latent
-        elif metapath[1:] == 'ubcib':
-            path_output = ubcib_latent
-        elif metapath[1:] == 'ubub':
-            path_output = ubub_latent
-        elif metapath[1:] == 'ubcab':
-            path_output = ubcab_latent
-        path_output = Reshape((1, 128))(path_output)
-    else:
-        if metapath[1:] == 'uub':
-            path_output = concatenate([
-                ubcab_latent,
-                ubub_latent,
-                ubcib_latent
-            ])
-        elif metapath[1:] == 'ubcib':
-            path_output = concatenate([
-                ubcab_latent,
-                ubub_latent,
-                uub_latent
-            ])
-        elif metapath[1:] == 'ubub':
-            path_output = concatenate([
-                ubcab_latent,
-                ubcib_latent,
-                uub_latent
-            ])
-        elif metapath[1:] == 'ubcab':
-            path_output = concatenate([
-                ubub_latent,
-                ubcib_latent,
-                uub_latent
-            ])
-        path_output = Reshape((3, 128))(path_output)
-
+    elif metapath == 3:
+        path_output = concatenate([
+            ubub_latent,
+            ubcib_latent,
+            uub_latent
+        ])
+    elif metapath == 2:
+        path_output = concatenate([
+            ubcib_latent,
+            uub_latent
+        ])
+    elif metapath == 1:
+        path_output = concatenate([
+            uub_latent
+        ])
+    path_output = Reshape((metapath, 128))(path_output)
     path_output = metapath_attention(user_latent, item_latent, path_output, latent_dim, 128)
 
     user_atten = user_attention(user_latent, path_output)
