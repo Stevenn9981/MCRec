@@ -337,9 +337,7 @@ def get_model(usize, isize, path_nums, timestamps, length, layers=[20, 10], reg_
             uub_latent
         ])
     elif metapath == 1:
-        path_output = concatenate([
-            uub_latent
-        ])
+        path_output = uub_latent
     path_output = Reshape((metapath, 128))(path_output)
     path_output = metapath_attention(user_latent, item_latent, path_output, latent_dim, 128)
 
