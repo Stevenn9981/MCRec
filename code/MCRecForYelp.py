@@ -48,7 +48,7 @@ def parse_args():
                         help="Embedding size for user and item embedding")
     parser.add_argument('--latent_layer_dim', nargs='?', default='[512, 256, 128, 64]',
                         help="Embedding size for each layer")
-    parser.add_argument('--num_neg', type=int, default=1,
+    parser.add_argument('--num_neg', type=int, default=4,
                         help='Number of negative instances to pair with a positive instance.')
     parser.add_argument('--K', type=int, default=3,
                         help='Number of topK in experiments.')
@@ -563,7 +563,7 @@ if __name__ == '__main__':
 
     print('num_negatives = ', num_negatives)
 
-    t1 = time()
+    t0 = time()
     dataset = Dataset('../data/yelp/' + dataset)
     trainMatrix, testRatings, testNegatives = dataset.trainMatrix, dataset.testRatings, dataset.testNegatives
     train = dataset.train
@@ -580,7 +580,7 @@ if __name__ == '__main__':
     length = dataset.fea_size
 
     print("Load data done [%.1f s]. #user=%d, #item=%d, #train=%d, #test=%d" % (
-        time() - t1, num_users, num_items, len(train), len(testRatings)))
+        time() - t0, num_users, num_items, len(train), len(testRatings)))
     print('path nums = ', path_nums)
     print('timestamps = ', timestamps)
 
@@ -621,7 +621,7 @@ if __name__ == '__main__':
                                                          path_nums, timestamps, train,
                                                          num_negatives, batch_size, True)
         t = time()
-        print('[%.1f s] epoch %d train_steps %d' % (t - t1, epoch, train_steps))
+        print('[%.1f s] epoch %d train_steps %d' % (t - t0, epoch, train_steps))
         # Training
         hist = model.fit_generator(train_batches,
                                    train_steps,
@@ -639,7 +639,7 @@ if __name__ == '__main__':
                                              length, testRatings, testNegatives, 3, evaluation_threads)
             p, r, ndcg, loss = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean(), hist.history['loss'][0]
             print('Iteration %d [%.1f s]: Precision@3 = %.4f, Recall@3 = %.4f, NDCG@3 = %.4f, loss = %.4f [%.1f s]'
-                  % (epoch, t2 - t1, p, r, ndcg, loss, time() - t2))
+                  % (epoch, t2 - t1, p, r, ndcg, loss, time() - t0))
 
             t2 = time()
             (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
@@ -650,7 +650,7 @@ if __name__ == '__main__':
                                              length, testRatings, testNegatives, 10, evaluation_threads)
             p, r, ndcg, loss = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean(), hist.history['loss'][0]
             print('Iteration %d [%.1f s]: Precision@10 = %.4f, Recall@10 = %.4f, NDCG@10 = %.4f, loss = %.4f [%.1f s]'
-                  % (epoch, t2 - t1, p, r, ndcg, loss, time() - t2))
+                  % (epoch, t2 - t1, p, r, ndcg, loss, time() - t0))
 
             # t2 = time()
             # (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
