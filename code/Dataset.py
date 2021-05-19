@@ -17,11 +17,11 @@ class Dataset(object):
         self.user_item_map, self.item_user_map, self.train, self.item_popularity = self.load_rating_file_as_map(path + ".train.rating")
         self.testRatings = self.load_rating_file_as_list(path + ".test.rating")
         self.testNegatives = self.load_negative_file(path + ".test.negative")
-        # self.user_feature, self.item_feature, self.type_feature, self.age_feature, self.occ_feature = self.load_feature_as_map(path+'.bpr.user_embedding', path+'.bpr.item_embedding', path+'.bpr.type_embedding', path+'.age_fea', path+'.occ_fea')
+        self.user_feature, self.item_feature = self.load_feature_as_map(path+'.bpr.user_embedding', path+'.bpr.item_embedding')
 
-        self.user_feature = np.random.rand(self.num_users, 64)
-        self.item_feature = np.random.rand(self.num_items, 64)
-        self.type_feature = np.random.rand(19, 64)
+        # self.user_feature = np.random.rand(self.num_users, 64)
+        # self.item_feature = np.random.rand(self.num_items, 64)
+        self.type_feature = np.random.rand(19, 128)
         self.fea_size = len(self.user_feature[1])
 
         self.path_umtm, self.umtm_path_num, self.umtm_timestamp = self.load_path_as_map(path + ".umtm_5_1")
@@ -118,12 +118,9 @@ class Dataset(object):
                 line = f.readline()
         return mat
 
-    def load_feature_as_map(self, user_fea_file, item_fea_file, type_fea_file, age_fea_file, occ_fea_file):
-        user_feature = np.zeros((self.num_users, 64))
-        item_feature = np.zeros((self.num_items, 64))
-        type_feature = np.zeros((19, 64))
-        age_feature = dict()
-        occ_feature = dict()
+    def load_feature_as_map(self, user_fea_file, item_fea_file):
+        user_feature = np.zeros((self.num_users, 128))
+        item_feature = np.zeros((self.num_items, 128))
 
         with open(user_fea_file) as infile:
             for line in infile.readlines():
@@ -141,31 +138,7 @@ class Dataset(object):
                 for j in range(len(arr[1:])):
                     item_feature[i][j] = float(arr[j + 1])
 
-        with open(type_fea_file) as infile:
-            for line in infile.readlines():
-                arr = line.strip().split(' ')
-                t = int(arr[0])
-                #type_feature[t] = list()
-                for j in range(len(arr[1:])):
-                    type_feature[t][j] = float(arr[j + 1])
-        '''
-        with open(age_fea_file) as infile:
-            for line in infile.readlines():
-                arr = line.strip().split(' ')
-                a = int(arr[0])
-                age_feature[a] = list()
-                for f in arr[1:]:
-                    age_feature[a].append(float(f))
-
-        with open(occ_fea_file) as infile:
-            for line in infile.readlines():
-                arr = line.strip().split(' ')
-                o = int(arr[0])
-                occ_feature[o] = list()
-                for f in arr[1:]:
-                    occ_feature[o].append(float(f))
-        '''
-        return user_feature, item_feature, type_feature, age_feature, occ_feature
+        return user_feature, item_feature
 
     def load_path_as_map(self, filename):
         print(filename)
@@ -207,7 +180,7 @@ class Dataset(object):
 
 
 if __name__ == '__main__':
-    dataset = Dataset('../data/ml-100k')
+    dataset = Dataset('../data/yelp/yelp')
     print( dataset.user_feature)
     print( dataset.item_feature)
     print( dataset.type_feature)
