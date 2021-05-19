@@ -593,15 +593,28 @@ if __name__ == '__main__':
 
     # Check Init performance
     t1 = time()
-    # (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
-    #                                  path_ubcab,
-    #                                  path_ubub,
-    #                                  path_ubcib,
-    #                                  path_uub,
-    #                                  path_nums, timestamps, length, testRatings,
-    #                                  testNegatives, topK, evaluation_threads)
-    # p, r, ndcg = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean()
-    # print('Init: Precision = %.4f, Recall = %.4f, NDCG = %.4f [%.1f]' % (p, r, ndcg, time() - t1))
+    (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
+                                     path_ubcab,
+                                     path_ubub,
+                                     path_ubcib,
+                                     path_uub,
+                                     path_nums, timestamps, length, testRatings,
+                                     testNegatives, 3, evaluation_threads)
+    p, r, ndcg = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean()
+    print('Init: Precision = %.4f, Recall = %.4f, NDCG = %.4f [%.1f]' % (p, r, ndcg, time() - t1))
+
+
+    (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
+                                     path_ubcab,
+                                     path_ubub,
+                                     path_ubcib,
+                                     path_uub,
+                                     path_nums, timestamps, length, testRatings,
+                                     testNegatives, 10, evaluation_threads)
+    p, r, ndcg = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean()
+    print('Init: Precision = %.4f, Recall = %.4f, NDCG = %.4f [%.1f]' % (p, r, ndcg, time() - t1))
+
+
 
     best_p = -1
     p_list, r_list, ndcg_list = [], [], []
@@ -620,6 +633,8 @@ if __name__ == '__main__':
                                                          num_negatives, batch_size, True)
         t = time()
         print('[%.1f s] epoch %d train_steps %d' % (t - t0, epoch, train_steps))
+
+
         # Training
         hist = model.fit_generator(train_batches,
                                    train_steps,
