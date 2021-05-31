@@ -144,13 +144,13 @@ class Dataset(object):
                 for j in range(len(arr[1:])):
                     item_feature[i][j] = float(arr[j + 1])
 
-        with open(type_fea_file) as infile:
-            for line in infile.readlines():
-                arr = line.strip().split(' ')
-                t = int(arr[0])
-                # type_feature[t] = list()
-                for j in range(len(arr[1:])):
-                    type_feature[t][j] = float(arr[j + 1])
+        # with open(type_fea_file) as infile:
+        #     for line in infile.readlines():
+        #         arr = line.strip().split(' ')
+        #         t = int(arr[0])
+        #         # type_feature[t] = list()
+        #         for j in range(len(arr[1:])):
+        #             type_feature[t][j] = float(arr[j + 1])
 
         return user_feature, item_feature, type_feature
 
