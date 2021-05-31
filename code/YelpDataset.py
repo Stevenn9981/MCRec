@@ -25,10 +25,11 @@ class Dataset(object):
             path + ".train.rating")
         self.testRatings = self.load_rating_file_as_list(path + ".test.rating")
         self.testNegatives = self.load_negative_file(path + ".test.negative")
-        # self.user_feature, self.item_feature, self.type_feature, self.age_feature, self.occ_feature = self.load_feature_as_map(path+'.bpr.user_embedding', path+'.bpr.item_embedding', path+'.bpr.type_embedding', path+'.age_fea', path+'.occ_fea')
+        self.user_feature, self.item_feature, self.type_feature = self.load_feature_as_map(
+            path + '.bpr.user_embedding', path + '.bpr.item_embedding', path + '.bpr.type_embedding')
 
-        self.user_feature = np.random.rand(self.num_users, 64)
-        self.item_feature = np.random.rand(self.num_items, 64)
+        # self.user_feature = np.random.rand(self.num_users, 64)
+        # self.item_feature = np.random.rand(self.num_items, 64)
         self.type_feature = np.random.rand(19, 64)
         self.fea_size = len(self.user_feature[1])
         assert len(self.testRatings) == len(self.testNegatives)
@@ -126,8 +127,6 @@ class Dataset(object):
         user_feature = np.zeros((self.num_users, 64))
         item_feature = np.zeros((self.num_items, 64))
         type_feature = np.zeros((19, 64))
-        age_feature = dict()
-        occ_feature = dict()
 
         with open(user_fea_file) as infile:
             for line in infile.readlines():
@@ -153,7 +152,7 @@ class Dataset(object):
                 for j in range(len(arr[1:])):
                     type_feature[t][j] = float(arr[j + 1])
 
-        return user_feature, item_feature, type_feature, age_feature, occ_feature
+        return user_feature, item_feature, type_feature
 
     def load_path_as_map(self, filename):
         print(filename)
