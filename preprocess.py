@@ -92,24 +92,24 @@ data = []
 #         # train_dict[inter[0]].append(inter[1])
 
 
-fw1 = open('data/yelp/yelp.bpr.item_embedding1', 'w')
+# fw1 = open('data/yelp/yelp.bpr.item_embedding1', 'w')
 fw2 = open('data/yelp/yelp.bpr.user_embedding1', 'w')
 
-with open('data/yelp/yelp.bpr.item_embedding', 'r') as infile:
-    for line in infile.readlines():
-        inter = [float(i) for i in line.strip().split()]
-        id, embedding = int(inter[0]), inter[1:]
-        fw1.write(str(id + 1) + ' ')
-        for embed in embedding:
-            fw1.write(str(embed) + " ")
-        fw1.write('\n')
+# with open('data/yelp/yelp.bpr.item_embedding', 'r') as infile:
+# #     for line in infile.readlines():
+# #         inter = [float(i) for i in line.strip().split()]
+# #         id, embedding = int(inter[0]), inter[1:]
+# #         fw1.write(str(id + 1) + ' ')
+# #         for embed in embedding:
+# #             fw1.write(str(embed) + " ")
+# #         fw1.write('\n')
 
 
 with open('data/yelp/yelp.bpr.user_embedding', 'r') as infile:
     for line in infile.readlines():
         inter = [float(i) for i in line.strip().split()]
         id, embedding = int(inter[0]), inter[1:]
-        fw2.write(str(id + 1) + ' ')
+        fw2.write(str(id - 14853) + ' ')
         for embed in embedding:
             fw2.write(str(embed) + " ")
         fw2.write('\n')
