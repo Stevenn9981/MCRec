@@ -601,7 +601,7 @@ if __name__ == '__main__':
                                      path_nums, timestamps, length, testRatings,
                                      testNegatives, 3, evaluation_threads)
     p, r, ndcg = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean()
-    print('Init: Precision = %.4f, Recall = %.4f, NDCG = %.4f [%.1f]' % (p, r, ndcg, time() - t1))
+    print('Init: Precision@3 = %.4f, Recall@3 = %.4f, NDCG@3 = %.4f [%.1f]' % (p, r, ndcg, time() - t1))
 
 
     (ps, rs, ndcgs) = evaluate_model(model, user_feature, item_feature, type_feature, num_users, num_items,
@@ -612,7 +612,7 @@ if __name__ == '__main__':
                                      path_nums, timestamps, length, testRatings,
                                      testNegatives, 10, evaluation_threads)
     p, r, ndcg = np.array(ps).mean(), np.array(rs).mean(), np.array(ndcgs).mean()
-    print('Init: Precision = %.4f, Recall = %.4f, NDCG = %.4f [%.1f]' % (p, r, ndcg, time() - t1))
+    print('Init: Precision@10 = %.4f, Recall@10 = %.4f, NDCG@10 = %.4f [%.1f]' % (p, r, ndcg, time() - t1))
 
 
 
